@@ -1,0 +1,16 @@
+	node("ansible_docker"){
+    stage("Git checkout"){
+        git credentialsId: '5c133435-8746-43fd-ac47-21fadc2c5b39', url: 'git@github.com:Dok-dev/example-playbook.git'
+    }
+    stage("Check ssh key"){
+        secret_check=true
+    }
+    stage("Run playbook"){
+        if (secret_check){
+            sh 'ansible-playbook site.yml -i inventory/prod.yml'
+        }
+        else{
+            echo 'no more keys'
+        }
+        
+    }
